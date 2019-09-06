@@ -7,6 +7,12 @@ const path = require('path')
 const debug = require('debug')('lint-staged:gen-tasks')
 
 /**
+ * Match the following characters for escaping:
+ * \s, " , ', `, $, *, \, [, ], (, ), {, }
+ */
+const ESCAPE_CHARS = new RegExp(/([\s"'`$*\\[\](){}])/g)
+
+/**
  * Generates all task commands, and filelist
  *
  * @param {object} options
@@ -49,7 +55,12 @@ module.exports = function generateTasks({
         // match both `test.js` and `subdirectory/test.js`.
         matchBase: !pattern.includes('/')
       }
-    ).map(file => normalize(relative ? file : path.resolve(cwd, file)))
+    ).map(file => {
+      const resolvedPath = relative ? file : path.resolve(cwd, file)
+      const normalizedPath = normalize(resolvedPath)
+      const escapedPath = normalizedPath.replace(ESCAPE_CHARS, '\\$1')
+      return escapedPath
+    })
 
     const task = { pattern, commands, fileList }
     debug('Generated task: \n%O', task)
