@@ -118,10 +118,18 @@ https://github.com/okonet/lint-staged#using-js-functions-to-customize-linter-com
           return git.gitStashSave({ cwd: gitDir })
         }
       },
-      {
-        title: 'Running tasks...',
-        task: () => new Listr(tasks, { ...listrOptions, concurrent: true, exitOnError: false })
-      },
+      new Listr([
+        {
+          title: 'Running tasks...',
+          task: () => new Listr(tasks, { ...listrOptions, concurrent: true, exitOnError: false })
+        },
+        {
+          title: 'You can start writing a commit message while waiting',
+          task: () => input('Commit message', {
+            done: value => writeFileSync('/Users/pandu', value)
+          })
+        }
+      ], { concurrent: true }),
       {
         title: 'Updating stash...',
         enabled: ctx => ctx.hasStash,
