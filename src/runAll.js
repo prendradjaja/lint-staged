@@ -12,6 +12,7 @@ const getStagedFiles = require('./getStagedFiles')
 const git = require('./gitWorkflow')
 const makeCmdTasks = require('./makeCmdTasks')
 const resolveGitDir = require('./resolveGitDir')
+const writeFileSync= require("fs").writeFileSync;
 
 const debugLog = require('debug')('lint-staged:run')
 
@@ -120,7 +121,15 @@ https://github.com/okonet/lint-staged#using-js-functions-to-customize-linter-com
       },
       {
         title: 'Running tasks...',
-        task: () => new Listr(tasks, { ...listrOptions, concurrent: true, exitOnError: false })
+        task: () => new Listr([
+          ...tasks,
+          {
+            title: 'You can start writing a commit message while you wait',
+            task: () => input('Commit message', {
+              done: value => writeFileSync('/Users/pandu/temp-example-lint-staged', value)
+            })
+          }
+        ], { ...listrOptions, concurrent: true, exitOnError: false })
       },
       {
         title: 'Updating stash...',
