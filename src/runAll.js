@@ -13,6 +13,7 @@ const git = require('./gitWorkflow')
 const makeCmdTasks = require('./makeCmdTasks')
 const resolveGitDir = require('./resolveGitDir')
 const writeFileSync= require("fs").writeFileSync;
+const input = require('listr-input');
 
 const debugLog = require('debug')('lint-staged:run')
 
