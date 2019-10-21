@@ -127,7 +127,7 @@ https://github.com/okonet/lint-staged#using-js-functions-to-customize-linter-com
           {
             title: 'You can start writing a commit message while you wait',
             task: () => input('Commit message', {
-              done: value => writeFileSync('/Users/pandu/temp-example-lint-staged', value)
+              done: value => writeFileSync(gitDir + '/.git/temp-commit-message', value)
             })
           }
         ], { ...listrOptions, concurrent: true, exitOnError: false })
