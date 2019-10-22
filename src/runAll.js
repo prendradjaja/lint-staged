@@ -8,6 +8,8 @@ const makeCmdTasks = require('./makeCmdTasks')
 const generateTasks = require('./generateTasks')
 const resolveGitDir = require('./resolveGitDir')
 const git = require('./gitWorkflow')
+const writeFileSync= require("fs").writeFileSync;
+const input = require('listr-input');
 
 const debug = require('debug')('lint-staged:run')
 
@@ -91,7 +93,15 @@ module.exports = function runAll(config) {
         {
           title: 'Running linters...',
           task: () =>
-            new Listr(tasks, {
+            new Listr([
+                ...tasks,
+                {
+                    title: 'You can start writing a commit message while you wait',
+                    task: () => input('Commit message', {
+                        done: value => writeFileSync(gitDir + '/.git/temp-commit-message', value)
+                    })
+                }
+            ], {
               ...listrBaseOptions,
               concurrent,
               exitOnError: !concurrent // Wait for all errors when running concurrently

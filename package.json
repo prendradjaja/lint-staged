@@ -10,7 +10,10 @@
     "Suhas Karanth <sudo.suhas@gmail.com>"
   ],
   "bin": "index.js",
-  "files": ["index.js", "src"],
+  "files": [
+    "index.js",
+    "src"
+  ],
   "scripts": {
     "cz": "git-cz",
     "lint:base": "eslint --rule \"prettier/prettier: 2\"",
@@ -38,6 +41,7 @@
     "is-glob": "^4.0.0",
     "is-windows": "^1.0.2",
     "listr": "^0.14.2",
+    "listr-input": "^0.2.0",
     "listr-update-renderer": "^0.5.0",
     "lodash": "^4.17.11",
     "log-symbols": "^2.2.0",
@@ -77,8 +81,12 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "setupFiles": ["./testSetup.js"],
-    "snapshotSerializers": ["jest-snapshot-serializer-ansi"]
+    "setupFiles": [
+      "./testSetup.js"
+    ],
+    "snapshotSerializers": [
+      "jest-snapshot-serializer-ansi"
+    ]
   },
   "keywords": [
     "lint",
